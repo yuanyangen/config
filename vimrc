@@ -1,22 +1,22 @@
 " NeoBundle Scripts-----------------------------
 if has('vim_starting')  
-  set runtimepath+=~/.config/nvim/bundle/neobundle.vim/
-  set runtimepath+=~/.config/nvim/
+  set runtimepath+=~/.config/vim/bundle/neobundle.vim/
+  set runtimepath+=~/.config/vim/
 endif
 
-let neobundle_readme=expand('~/.config/nvim/bundle/neobundle.vim/README.md')
+let neobundle_readme=expand('~/.config/vim/bundle/neobundle.vim/README.md')
 
 if !filereadable(neobundle_readme)  
   echo "Installing NeoBundle..."
   echo ""
-  silent !mkdir -p ~/.config/nvim/bundle
-  silent !git clone https://github.com/Shougo/neobundle.vim ~/.config/nvim/bundle/neobundle.vim/
+  silent !mkdir -p ~/.config/vim/bundle
+  silent !git clone https://github.com/Shougo/neobundle.vim ~/.config/vim/bundle/neobundle.vim/
   let g:not_finsh_neobundle = "yes"
 endif
 
-call neobundle#begin(expand('~/.config/nvim/bundle'))
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'alvan/vim-php-manual'
+call neobundle#begin(expand('~/.config/vim/bundle'))
+NeoBundle 'scrooloose/nerdtree'  
+NeoBundle 'alvan/vim-php-manual'  
 NeoBundle 'thirtythreeforty/lessspace.vim'
 NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'vim-syntastic/syntastic'
@@ -27,6 +27,7 @@ NeoBundle 'Shougo/neocomplcache.vim'
 NeoBundle 'vim-airline/vim-airline'
 NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'sukima/xmledit'
+NeoBundle 'icymind/NeoSolarized'
 "NeoBundle 'Valloric/YouCompleteMe', {
 "     \ 'build'      : {
 "        \ 'mac'     : './install.sh --clang-completer --system-libclang --omnisharp-completer',
@@ -36,12 +37,12 @@ NeoBundle 'sukima/xmledit'
 "        \ }
 "     \ }
 
-call neobundle#end()  
+call neobundle#end()
 filetype plugin indent on
 
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
-NeoBundleCheck  
+NeoBundleCheck
 "End NeoBundle Scripts-------------------------
 "使用鼠标
 set mouse=a
@@ -50,8 +51,8 @@ set mouse-=a
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "编码相关
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"自动选择编码方式,从左到右依此选择 
-set fileencodings=ucs-bom,utf-8,cp936,gb18030,latin1 
+"自动选择编码方式,从左到右依此选择
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,latin1
 set termencoding=utf-8
 set encoding=utf-8
 
@@ -64,6 +65,10 @@ set encoding=utf-8
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "color
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"设置终端256色效果显示，有这个才能使各个主题的颜色正常
+"
+set background=dark
+colorscheme NeoSolarized
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "vim都会使用的配置
@@ -144,15 +149,12 @@ map <C-S-Left> :vertical res -1<CR>
 map <C-S-Up> :res +1<CR>
 map <C-S-Down> :res -1<CR>
 
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "设置syntax 不检查的文件类型
 "“”"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['foo', 'bar'],
                            \ 'passive_filetypes': ['java'] }
-
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "设置NERDTree的快捷键为ctrl + n, 打开左侧的树状文件夹浏览器
