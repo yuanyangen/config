@@ -56,7 +56,6 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,latin1
 set termencoding=utf-8
 set encoding=utf-8
 
-
 "设置保存php文件的时候, 将文件的编码保存为utf8
 "autocmd BufReadPost *.php :set fileencoding utf8
 "如果需要转换格式, 只需要执行: set fenc utf8
@@ -218,12 +217,36 @@ function! PhpConfig()
     "php documentro 相关配置,设定\d为生成注释 
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     noremap <Leader>d :call PhpDocSingle()<CR>
-
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "配置F5为使用php执行当前正在编辑的文件
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    nnoremap <F5> :! php %   
 endfun
+
+" F5 运行代码
+nnoremap <F5> :call RunFile() <CR>
+function! RunFile()
+    if &filetype == 'c'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'cpp'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'java'
+        exec "!javac %"
+        exec "!time java %<"
+    elseif &filetype == 'sh'
+        :!time bash %
+    elseif &filetype == 'python'
+        exec "!time python %"
+    elseif &filetype == 'html'
+        exec "!firefox % &"
+    elseif &filetype == 'go'
+        "        exec "!go build %<"
+        exec "!time go run %"
+    elseif &filetype == 'mkd'
+        exec "!~/.vim/markdown.pl % > %.html &"
+        exec "!firefox %.html &"
+    endif
+endfun
+
+
 
 "go相关配置
 function! GoConfig()
