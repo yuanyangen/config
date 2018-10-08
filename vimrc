@@ -1,10 +1,4 @@
 " Plug Scripts-----------------------------
-if has('nvim')
-    set runtimepath+=~/.config/nvim/
-else
-    set runtimepath+=~/.vim/
-endif
-
 function! InitPlugManager()
     let neobundle_readme=expand('~/.vim/autoload/plug.vim')
     if !filereadable(neobundle_readme)
