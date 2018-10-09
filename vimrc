@@ -1,11 +1,11 @@
 " Plug Scripts-----------------------------
 function! InitPlugManager()
-    let neobundle_readme=expand('~/.vim/autoload/plug.vim')
+    let neobundle_readme=expand('~/.config/nvim/autoload/plug.vim')
     if !filereadable(neobundle_readme)
         echo "Installing vim-plug..."
         echo ""
-        silent !mkdir -p ~/.vim/autoload
-        silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        silent !mkdir -p ~/.config/nvim/autoload
+        silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     endif
 endfun
 
@@ -22,20 +22,54 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " 动态检查错误 lint
 "Plug 'ludovicchabant/vim-gutentags' "自动生成tag
 Plug 'mhinz/vim-signify' "左侧diff出修改与git之间的差别
-"Plug 'maralla/completor.vim'
-"Plug 'davidhalter/jedi-vim' " python 的静态语言分析与跳转
-Plug 'vim-scripts/indentpython.vim'
+Plug 'davidhalter/jedi-vim' " python 的静态语言分析与跳转
+Plug 'vim-scripts/indentpython.vim' " python缩进
 Plug 'tell-k/vim-autopep8'
-Plug 'Yggdroot/LeaderF', { 'do': './install.sh' } " 文件切换，模糊搜索
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' } " 文件切换，模糊搜索, buffer 切换
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " 模糊搜索
 Plug 'skywind3000/asyncrun.vim' "异步执行任务
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
+Plug 'Shougo/deoplete.nvim' " 代码补全
+Plug 'Shougo/denite.nvim' " buf 浏览， 文件浏览
+Plug 'zchee/deoplete-jedi' "代码补全for python
+Plug 'zchee/deoplete-go', { 'do': 'make'} "代码补全for golang
 Plug 'fatih/vim-go', { 'tag': '*' }
-Plug 'vim-vdebug/vdebug'
+Plug 'vim-vdebug/vdebug' " debug
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'iCyMind/NeoSolarized'
+Plug 'Xuyuanp/nerdtree-git-plugin' " 在nerdtree中显示git状态
+Plug 'bling/vim-bufferline' " 在statusline中显示buffer信息
 call plug#end()
+
+colorscheme NeoSolarized
+
+function InitVdebug()
+    "<F5>: start/run (to next breakpoint/end of script)
+    "<F2>: step over
+    "<F3>: step into
+    "<F4>: step out
+    "<F6>: stop debugging (kills script)
+    "<F7>: detach script from debugger
+    "<F9>: run to cursor
+    "<F10>: toggle line breakpoint
+    "<F11>: show context variables (e.g. after "eval")
+    "<F12>: evaluate variable under cursor
+    ":Breakpoint <type> <args>: set a breakpoint of any type (see :help VdebugBreakpoints)
+    ":VdebugEval <code>: evaluate some code and display the result
+    "<Leader>e: evaluate the expression under visual highlight and display the result
+    autocmd VimLeave * :python3 debugger.close()<cr>
+endfunc
+
+function InitSnip()
+    " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+    let g:UltiSnipsExpandTrigger="<tab>"
+    let g:UltiSnipsJumpForwardTrigger="<c-b>"
+    let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+    " If you want :UltiSnipsEdit to split your window.
+    let g:UltiSnipsEditSplit="vertical"
+endfunc
+call InitSnip()
 
 function InitDeoplete()
     let g:deoplete#enable_at_startup = 1
@@ -153,29 +187,23 @@ function! CommonInit()
     map <C-S-Left> :vertical res -1<CR>
     map <C-S-Up> :res +1<CR>
     map <C-S-Down> :res -1<CR>
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "设置跳回上次文件使用位置
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "map <C-[> :e# <CR>
 endfunc
 call CommonInit()
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"设置NERDTree的快捷键为ctrl + n, 打开左侧的树状文件夹浏览器
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <C-n> :NERDTreeToggle<CR>
+function InitNerdTree()
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    "设置NERDTree的快捷键为alt + 1, 打开左侧的树状文件夹浏览器
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    map <C-n> :NERDTreeToggle<CR>
+    autocmd VimEnter * NERDTreeToggle
+endfunc
+call InitNerdTree()
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "设置airline
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_theme='cool'
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 设置开启ConqueGdb 的快捷方式是\g
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"map <Leader>g :ConqueGdb
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""基于特定文件类型的配置
@@ -189,14 +217,6 @@ autocmd filetype python call PythonConfig()
 "php相关配置
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! PhpConfig()
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "php documentro 相关配置,设定\d为生成注释
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    noremap <Leader>d :call PhpDocSingle()<CR>
-
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "配置F5为使用php执行当前正在编辑的文件
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     nnoremap <F5> :! php %
 endfun
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -204,38 +224,10 @@ endfun
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! PythonConfig()
     let python_highlight_all=1
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "配置F5为使用python执行当前正在编辑的文件
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "nnoremap <F5> :! python % <CR>
 endfun
 
 "go相关配置
 function! GoConfig()
-    nnoremap <S-K> :Godoc<CR>
-    nnoremap <F5> <Esc>:GoRun
-    nnoremap <F4> <Esc>:GoTest
-    nmap <leader>r <Plug>(go-run)
-    nmap <leader>b <Plug>(go-build)
-    nmap <leader>t <Plug>(go-test)
-    nmap <leader>c <Plug>(go-coverage)
-    nmap <Leader>ds <Plug>(go-def-split)
-    nmap <Leader>dv <Plug>(go-def-vertical)
-    nmap <Leader>dt <Plug>(go-def-tab)
-    nmap <Leader>gb <Plug>(go-doc-browser)
-    nmap <Leader>i <Plug>(go-info)
-    nmap <Leader>gd <Plug>(go-doc)
-    nmap <Leader>gv <Plug>(go-doc-vertical)
-    nmap <Leader>gb <Plug>(go-doc-browser)
-    nmap <Leader>s <Plug>(go-implements)
-    nmap <Leader>e <Plug>(go-rename)
-
-
-    let g:go_highlight_functions = 1
-    let g:go_highlight_methods = 1
-    let g:go_highlight_structs = 1
-    let g:go_highlight_operators = 1
-    let g:go_highlight_build_constraints = 1
     "配置F5为使用goimports格式化当前的文件
     let g:go_fmt_command = "goimports"
 endfun
