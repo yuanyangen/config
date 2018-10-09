@@ -199,6 +199,7 @@ function InitNerdTree()
 endfunc
 call InitNerdTree()
 
+map <C-e> :call leaderf#Buffer#startExpl('bottom') <CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "设置airline
