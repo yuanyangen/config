@@ -92,4 +92,14 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+alias gitpush='git push origin HEAD:refs/for/master'
+alias gitpullmaster='git pull origin master --rebase'
+alias gitcommit='gitdir=$(git rev-parse --git-dir); scp -p -P 29418 yuanyangen@git.byted.org:hooks/commit-msg ${gitdir}/hooks/'
+alias c="cd "
+alias nv=nvim
+alias bdpy="cd /Users/yuanyangen/HomeData/bdpy"
+alias top="gotop"
+
+
 source ~/.env.sh
