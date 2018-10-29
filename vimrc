@@ -195,7 +195,7 @@ function InitNerdTree()
     "设置NERDTree的快捷键为alt + 1, 打开左侧的树状文件夹浏览器
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     map <C-n> :NERDTreeToggle<CR>
-    autocmd VimEnter * NERDTreeToggle
+    "autocmd VimEnter * NERDTreeToggle
 endfunc
 call InitNerdTree()
 
